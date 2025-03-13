@@ -1,4 +1,7 @@
-"""Complete reporting pipeline for the spaceflights tutorial"""
+"""
+This is a boilerplate pipeline 'model_training'
+generated using Kedro 0.19.11
+"""
 
 from .pipeline import create_pipeline
 
