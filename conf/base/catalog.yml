@@ -39,19 +39,9 @@
 # (transcoding), templating and a way to reuse arguments that are frequently repeated. See more here:
 # https://docs.kedro.org/en/stable/data/data_catalog.html
 
-companies:
+tonal_exams:
   type: pandas.CSVDataset
-  filepath: data/01_raw/companies.csv
-
-reviews:
-  type: pandas.CSVDataset
-  filepath: data/01_raw/reviews.csv
-
-shuttles:
-  type: pandas.ExcelDataset
-  filepath: data/01_raw/shuttles.xlsx
-  load_args:
-    engine: openpyxl
+  filepath: data/01_raw/tonal_exams.csv
 
 preprocessed_companies:
   type: pandas.ParquetDataset
