@@ -43,9 +43,13 @@ tonal_exams_raw:
   type: pandas.CSVDataset
   filepath: data/01_raw/tonal_exams.csv
 
-tonal_exams_raw_clean:
+tonal_exams_clean:
   type: pandas.ParquetDataSet
   filepath: data/02_intermediate/tonal_exams_clean.parquet
+
+tonal_exams_features:
+  type: pandas.CSVDataSet
+  filepath: data/03_primary/audiogram_features.csv
 
 features_selected:
   type: pandas.ParquetDataSet

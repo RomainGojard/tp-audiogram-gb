@@ -1,10 +1,12 @@
-"""
-This is a boilerplate pipeline 'feature_engineering'
-generated using Kedro 0.19.11
-"""
-
-from kedro.pipeline import node, Pipeline, pipeline  # noqa
-
+from kedro.pipeline import Pipeline, node
+from .nodes import node_master
 
 def create_pipeline(**kwargs) -> Pipeline:
-    return pipeline([])
+    return Pipeline([
+        node(
+            func=node_master,
+            inputs="tonal_exams_clean",
+            outputs="tonal_exams_features",
+            name="node_master"
+        )
+    ])
