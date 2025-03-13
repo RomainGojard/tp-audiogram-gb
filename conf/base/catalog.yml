@@ -51,6 +51,18 @@ tonal_exams_features:
   type: pandas.CSVDataSet
   filepath: data/03_primary/audiogram_features.csv
 
+tonal_exams_mdeploy:
+  type: pandas.CSVDataSet
+  filepath: data/03_primary/audiogram_mdeploy.csv
+
+tonal_exams_meval:
+  type: pandas.CSVDataSet
+  filepath: data/03_primary/audiogram_meval.csv
+
+tonal_exams_mtrain:
+  type: pandas.CSVDataSet
+  filepath: data/03_primary/audiogram_mtrain.csv
+
 features_selected:
   type: pandas.ParquetDataSet
   filepath: data/03_primary/features_selected.parquet
