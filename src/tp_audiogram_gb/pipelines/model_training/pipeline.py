@@ -10,7 +10,7 @@ def create_pipeline(**kwargs) -> Pipeline:
     return pipeline([
         node(
             func=node_master,
-            inputs="tonal_exams_meval",
+            inputs="tonal_exams_features",
             outputs="tonal_exams_mtrain",
             name="node_master"
         )
