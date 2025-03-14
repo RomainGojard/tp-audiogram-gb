@@ -24,12 +24,13 @@ trained_model:
 
 evaluation_metrics:
   type: yaml.YAMLDataset
-  filepath: data/07_evaluation/metrics.yml
+  filepath: data/07_evaluation/evaluation_metrics.yml
 
-model_api:
-  type: pickle.PickleDataset
-  filepath: data/06_models/deployed_model.pkl
 
-api_response_examples:
-  type: json.JSONDataset
-  filepath: data/08_deployment/api_responses.json
+# model_api:
+#   type: pickle.PickleDataset
+#   filepath: data/06_models/deployed_model.pkl
+
+# api_response_examples:
+#   type: json.JSONDataset
+#   filepath: data/08_deployment/api_responses.json

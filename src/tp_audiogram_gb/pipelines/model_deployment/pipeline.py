@@ -10,7 +10,7 @@ def create_pipeline(**kwargs) -> Pipeline:
     return pipeline([
         node(
             func=node_master_model_deployment,
-            inputs="trained_model",
+            inputs=["trained_model", "evaluation_metrics"],
             outputs="",
             name="node_master_model_deployment"
         )
