@@ -12,11 +12,11 @@ tonal_exams_features:
 
 X_test:
   type: pandas.ParquetDataset
-  filepath: data/05_feature/X_test.parquet
+  filepath: data/05_model_input/X_test.parquet
 
 y_test:
   type: pandas.ParquetDataset
-  filepath: data/05_feature/y_test.parquet
+  filepath: data/05_model_input/y_test.parquet
 
 trained_model:
   type: pickle.PickleDataset
