@@ -7,7 +7,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 import mlflow
-
+mlflow.set_tracking_uri("http://127.0.0.1:5000")
 mlflow.autolog()
 
 def split_data(df: pd.DataFrame, test_size: float = 0.2):

@@ -2,6 +2,7 @@ import mlflow
 from sklearn.model_selection import train_test_split
 from sklearn.datasets import load_diabetes
 from sklearn.ensemble import RandomForestRegressor
+mlflow.set_tracking_uri("http://127.0.0.1:5000")
 mlflow.autolog()
 db = load_diabetes()
 X_train, X_test, y_train, y_test = train_test_split(db.data, db.target)
