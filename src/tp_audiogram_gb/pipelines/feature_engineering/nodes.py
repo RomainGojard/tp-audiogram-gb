@@ -26,7 +26,7 @@ def add_global_stats(df: pd.DataFrame) -> pd.DataFrame:
     print(f"✅ Statistiques globales ajoutées")
     return df
 
-def node_master(audiogram_clean: pd.DataFrame) -> pd.DataFrame:
+def node_master_feature_engineering(audiogram_clean: pd.DataFrame) -> pd.DataFrame:
     """
     Fonction principale du pipeline `feature_engineering`.
     """

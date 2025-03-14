@@ -40,7 +40,7 @@
 # https://docs.kedro.org/en/stable/data/data_catalog.html
 
 tonal_exams_raw:
-  type: pandas.CSVDataset
+  type: pandas.CSVDataSet
   filepath: data/01_raw/tonal_exams.csv
 
 tonal_exams_clean:
@@ -49,43 +49,19 @@ tonal_exams_clean:
 
 tonal_exams_features:
   type: pandas.CSVDataSet
-  filepath: data/03_primary/audiogram_features.csv
+  filepath: data/04_feature/tonal_exams_features.csv
 
-tonal_exams_mdeploy:
-  type: pandas.CSVDataSet
-  filepath: data/03_primary/audiogram_mdeploy.csv
-
-tonal_exams_meval:
-  type: pandas.CSVDataSet
-  filepath: data/03_primary/audiogram_meval.csv
-
-tonal_exams_mtrain:
-  type: pandas.CSVDataSet
-  filepath: data/03_primary/audiogram_mtrain.csv
-
-features_selected:
+X_test:
   type: pandas.ParquetDataSet
-  filepath: data/03_primary/features_selected.parquet
+  filepath: data/05_feature/X_test.parquet
 
-scaler:
-  type: pickle.PickleDataSet
-  filepath: data/03_primary/scaler.pkl
-
-train_data:
+y_test:
   type: pandas.ParquetDataSet
-  filepath: data/04_feature/train_data.parquet
-
-test_data:
-  type: pandas.ParquetDataSet
-  filepath: data/04_feature/test_data.parquet
+  filepath: data/05_feature/y_test.parquet
 
 trained_model:
   type: pickle.PickleDataSet
   filepath: data/06_models/trained_model.pkl
-
-predictions:
-  type: pandas.ParquetDataSet
-  filepath: data/05_model_input/predictions.parquet
 
 evaluation_metrics:
   type: yaml.YAMLDataSet

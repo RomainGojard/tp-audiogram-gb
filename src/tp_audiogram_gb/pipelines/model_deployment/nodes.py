@@ -21,7 +21,7 @@ def deploy_model(model_path: str, data: pd.DataFrame) -> pd.DataFrame:
   predictions = predict(model, data)
   return predictions
 
-def node_master(audiogram_clean: pd.DataFrame) -> pd.DataFrame:
+def node_master_model_deployment(audiogram_clean: pd.DataFrame) -> pd.DataFrame:
     """
     Fonction principale du pipeline `feature_engineering`.
     """

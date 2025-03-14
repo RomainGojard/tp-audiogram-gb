@@ -1,12 +1,5 @@
 import pandas as pd
 
-def load_data(audiogram_raw: pd.DataFrame) -> pd.DataFrame:
-    """
-    Charge les données brutes.
-    """
-    print(f"✅ Données brutes chargées avec {audiogram_raw.shape[0]} lignes et {audiogram_raw.shape[1]} colonnes")
-    return audiogram_raw
-
 def clean_data(audiogram_raw: pd.DataFrame) -> pd.DataFrame:
     """
     Nettoie les données :
@@ -25,10 +18,3 @@ def clean_data(audiogram_raw: pd.DataFrame) -> pd.DataFrame:
 
     print(f"✅ Données nettoyées : {df.shape[0]} lignes restantes")
     return df
-
-def node_master(audiogram_raw: pd.DataFrame) -> pd.DataFrame:
-    """
-    Fonction principale du pipeline `data_processing`.
-    Elle appelle les sous-fonctions et renvoie les données nettoyées.
-    """
-    return clean_data(audiogram_raw)
