@@ -5,7 +5,7 @@ def create_pipeline(**kwargs) -> Pipeline:
     return Pipeline([
         node(
             func=clean_data,
-            inputs="tonal_exams",
+            inputs="tonal_exams_raw",
             outputs="tonal_exams_clean",
             name="clean_data"
         )

@@ -10,7 +10,7 @@ def clean_data(audiogram_raw: pd.DataFrame) -> pd.DataFrame:
     df = audiogram_raw.copy()
 
     # Conversion des colonnes numériques
-    cols = df.columns[1:]  # Ignorer la première colonne si c'est un ID ou une catégorie
+    cols = df.columns  # Ignorer la première colonne si c'est un ID ou une catégorie
     df[cols] = df[cols].apply(pd.to_numeric, errors="coerce")
 
     # Suppression des valeurs aberrantes (ex: fréquences négatives)

@@ -6,6 +6,9 @@ import pickle
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+import mlflow
+
+mlflow.autolog()
 
 def split_data(df: pd.DataFrame, test_size: float = 0.2):
     """
