@@ -7,14 +7,14 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
+from sklearn.ensemble import RandomForestRegressor
 import mlflow
 mlflow.set_tracking_uri("http://127.0.0.1:5000")
 mlflow.autolog()
 
 def split_data(df: pd.DataFrame, test_size: float = 0.2):
     """
-    Prépare les données et les sépare en ensembles d'entraînement et de test.
+    Prépare les données, les normalise et les sépare en ensembles d'entraînement et de test.
     """
     # Sélectionner les colonnes avant et après traitement
     before_cols = [col for col in df.columns if col.startswith("before_exam")]
@@ -29,11 +29,22 @@ def split_data(df: pd.DataFrame, test_size: float = 0.2):
     # Cible (y) : valeurs après traitement
     y = df[after_cols]
 
+    # Normaliser X
+    X_min = X.min()
+    X_max = X.max()
+    X_normalized = (X - X_min) / (X_max - X_min)
+
+    # Normaliser y
+    y_min = y.min()
+    y_max = y.max()
+    y_normalized = (y - y_min) / (y_max - y_min)
+
     # Diviser les données en ensembles d'entraînement et de test
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X_normalized, y_normalized, test_size=test_size, random_state=42)
     print(f"Données divisées en train ({len(X_train)}) et test ({len(X_test)})")
 
-    return X_train, X_test, y_train, y_test
+    # Retourner les données normalisées et les paramètres de normalisation
+    return X_train, X_test, y_train, y_test, X_min, X_max, y_min, y_max
 
 def train_model(X_train, y_train):
     """
@@ -85,6 +96,12 @@ def node_master_model_training(audiogram_features: pd.DataFrame) -> tuple:
     """
     X_train, X_test, y_train, y_test, X_min, X_max, y_min, y_max = split_data(audiogram_features)
     model = train_model(X_train, y_train)
+
+    # Convertir les Series en DataFrame pour permettre la sauvegarde
+    X_min = X_min.to_frame(name="X_min")
+    X_max = X_max.to_frame(name="X_max")
+    y_min = y_min.to_frame(name="y_min")
+    y_max = y_max.to_frame(name="y_max")
 
     # Retourner le modèle, les données de test et les paramètres de normalisation
     return model, X_test, y_test, X_min, X_max, y_min, y_max
