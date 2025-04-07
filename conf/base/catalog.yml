@@ -18,6 +18,22 @@ y_test:
   type: pandas.ParquetDataset
   filepath: data/05_model_input/y_test.parquet
 
+X_min:
+  type: pandas.ParquetDataset
+  filepath: data/05_model_input/X_min.parquet
+
+X_max:
+  type: pandas.ParquetDataset
+  filepath: data/05_model_input/X_max.parquet
+
+y_min:
+  type: pandas.ParquetDataset
+  filepath: data/05_model_input/y_min.parquet
+
+y_max:
+  type: pandas.ParquetDataset
+  filepath: data/05_model_input/y_max.parquet
+
 trained_model:
   type: pickle.PickleDataset
   filepath: data/06_models/trained_model.pkl

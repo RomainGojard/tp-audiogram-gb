@@ -4,6 +4,8 @@ generated using Kedro 0.19.11
 """
 import pickle
 import pandas as pd
+import numpy as np
+from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 import mlflow
@@ -12,25 +14,60 @@ mlflow.autolog()
 
 def split_data(df: pd.DataFrame, test_size: float = 0.2):
     """
-    Sépare les données en train/test.
+    Prépare les données et les sépare en ensembles d'entraînement et de test.
     """
-    X = df.drop(columns=["mean_variation"])
-    y = df["mean_variation"]
+    # Sélectionner les colonnes avant et après traitement
+    before_cols = [col for col in df.columns if col.startswith("before_exam")]
+    after_cols = [col for col in df.columns if col.startswith("after_exam")]
 
+    # Vérifier que les colonnes correspondent
+    assert len(before_cols) == len(after_cols), "Les colonnes avant et après traitement ne correspondent pas."
+
+    # Caractéristiques (X) : valeurs avant traitement
+    X = df[before_cols]
+
+    # Cible (y) : valeurs après traitement
+    y = df[after_cols]
+
+    # Diviser les données en ensembles d'entraînement et de test
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=42)
     print(f"Données divisées en train ({len(X_train)}) et test ({len(X_test)})")
-    
+
     return X_train, X_test, y_train, y_test
 
 def train_model(X_train, y_train):
     """
-    Entraîne un modèle RandomForestRegressor.
+    Entraîne un modèle RandomForestRegressor pour prédire l'augmentation de l'ouïe.
     """
-    model = RandomForestRegressor(n_estimators=100, random_state=42)
-    model.fit(X_train, y_train)
-    
-    print("Modèle entraîné avec succès")
-    return model
+    # Définir le modèle
+    model = RandomForestRegressor(random_state=42)
+
+    # Définir les hyperparamètres à optimiser
+    param_grid = {
+        "n_estimators": [100, 200, 300],
+        "max_depth": [None, 10, 20, 30],
+        "min_samples_split": [2, 5, 10],
+        "min_samples_leaf": [1, 2, 4]
+    }
+
+    # Optimisation des hyperparamètres avec GridSearchCV
+    grid_search = GridSearchCV(
+        estimator=model,
+        param_grid=param_grid,
+        cv=3,  # Validation croisée à 3 plis
+        scoring="neg_mean_squared_error",
+        verbose=1,
+        n_jobs=-1
+    )
+
+    # Entraîner le modèle
+    grid_search.fit(X_train, y_train)
+
+    # Meilleur modèle
+    best_model = grid_search.best_estimator_
+    print(f"✅ Modèle entraîné avec succès avec les meilleurs paramètres : {grid_search.best_params_}")
+
+    return best_model
 
 def save_model(model, filepath: str):
     """
@@ -46,8 +83,8 @@ def node_master_model_training(audiogram_features: pd.DataFrame) -> tuple:
     """
     Fonction principale du pipeline `model_training` qui orchestre les étapes.
     """
-    X_train, X_test, y_train, y_test = split_data(audiogram_features)
+    X_train, X_test, y_train, y_test, X_min, X_max, y_min, y_max = split_data(audiogram_features)
     model = train_model(X_train, y_train)
-    save_model(model, "data/06_models/trained_model.pkl")
-    
-    return "data/06_models/trained_model.pkl", X_test, y_test
+
+    # Retourner le modèle, les données de test et les paramètres de normalisation
+    return model, X_test, y_test, X_min, X_max, y_min, y_max

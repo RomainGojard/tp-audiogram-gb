@@ -1,0 +1,43 @@
+artifact_path: model
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.10.8
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.6.1
+is_signature_from_type_hint: false
+mlflow_version: 2.20.4
+model_size_bytes: 38294053
+model_uuid: 4316c31dc9994f9294e9c5af8d38ee37
+run_id: 1691896683a94be79d8a6ba096b868cc
+signature:
+  inputs: '[{"type": "double", "name": "before_exam_125_Hz", "required": true}, {"type":
+    "double", "name": "before_exam_250_Hz", "required": true}, {"type": "double",
+    "name": "before_exam_500_Hz", "required": true}, {"type": "double", "name": "before_exam_1000_Hz",
+    "required": true}, {"type": "double", "name": "before_exam_2000_Hz", "required":
+    true}, {"type": "double", "name": "before_exam_4000_Hz", "required": true}, {"type":
+    "double", "name": "before_exam_8000_Hz", "required": true}, {"type": "double",
+    "name": "after_exam_125_Hz", "required": true}, {"type": "double", "name": "after_exam_250_Hz",
+    "required": true}, {"type": "double", "name": "after_exam_500_Hz", "required":
+    true}, {"type": "double", "name": "after_exam_1000_Hz", "required": true}, {"type":
+    "double", "name": "after_exam_2000_Hz", "required": true}, {"type": "double",
+    "name": "after_exam_4000_Hz", "required": true}, {"type": "double", "name": "after_exam_8000_Hz",
+    "required": true}, {"type": "double", "name": "variation_125_Hz", "required":
+    true}, {"type": "double", "name": "variation_250_Hz", "required": true}, {"type":
+    "double", "name": "variation_500_Hz", "required": true}, {"type": "double", "name":
+    "variation_1000_Hz", "required": true}, {"type": "double", "name": "variation_2000_Hz",
+    "required": true}, {"type": "double", "name": "variation_4000_Hz", "required":
+    true}, {"type": "double", "name": "variation_8000_Hz", "required": true}, {"type":
+    "double", "name": "std_variation", "required": true}]'
+  outputs: '[{"type": "tensor", "tensor-spec": {"dtype": "float64", "shape": [-1]}}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2025-04-07 09:06:42.805169'

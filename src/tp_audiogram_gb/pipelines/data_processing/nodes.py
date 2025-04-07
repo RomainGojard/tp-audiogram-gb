@@ -3,18 +3,35 @@ import pandas as pd
 def clean_data(audiogram_raw: pd.DataFrame) -> pd.DataFrame:
     """
     Nettoie les données :
-    - Convertit les fréquences en nombres
-    - Supprime les valeurs aberrantes (ex : fréquences négatives)
-    - Vérifie la cohérence des colonnes
+    - Convertit les colonnes en valeurs numériques
+    - Supprime les valeurs aberrantes (ex : fréquences négatives ou non numériques)
+    - Supprime les colonnes inutiles
+    - Supprime les lignes contenant des valeurs manquantes
     """
     df = audiogram_raw.copy()
 
-    # Conversion des colonnes numériques
-    cols = df.columns  # Ignorer la première colonne si c'est un ID ou une catégorie
-    df[cols] = df[cols].apply(pd.to_numeric, errors="coerce")
+    # Conversion des colonnes en valeurs numériques
+    df = df.apply(pd.to_numeric, errors="coerce")
 
-    # Suppression des valeurs aberrantes (ex: fréquences négatives)
-    df = df[(df[cols] >= 0).all(axis=1)]
+    # Suppression des colonnes inutiles (si elles ne commencent pas par "before_exam" ou "after_exam")
+    valid_columns = [col for col in df.columns if col.startswith("before_exam") or col.startswith("after_exam")]
+    df = df[valid_columns]
 
-    print(f"✅ Données nettoyées : {df.shape[0]} lignes restantes")
+    # Suppression des valeurs aberrantes (valeurs négatives)
+    df = df[(df >= 0).all(axis=1)]
+
+    # Suppression des lignes contenant des valeurs manquantes
+    df = df.dropna()
+
+    # Stockage des extrémums (min et max) de chaque colonne
+    extremums = {col: {"min": df[col].min(), "max": df[col].max()} for col in df.columns}
+    # print(f"📊 Extrémums des colonnes : {extremums}")
+
+    for col in df.columns:
+        min_val = extremums[col]["min"]
+        max_val = extremums[col]["max"]
+        df[col] = (df[col] - min_val) / (max_val - min_val)
+
+
+    print(f"✅ Données nettoyées : {df.shape[0]} lignes restantes, {df.shape[1]} colonnes")
     return df
