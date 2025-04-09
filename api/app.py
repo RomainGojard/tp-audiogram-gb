@@ -6,43 +6,61 @@ import json
 from pathlib import Path
 from kedro.framework.session import KedroSession
 from save_from_post_request import save_from_post_request
-from kedro.framework.startup import bootstrap_project
 
 app = Flask(__name__)
-#project_path = "/Users/romaingojard/Desktop/M2_ESGI/Industrialisation_ML/TP_industrialisation_ML_GB/tp-audiogram-gb/"
 bootstrap_project(Path.cwd())
 
-# Define Flask route for POST requests
+# Route pour exécuter le pipeline Kedro par défaut
+@app.route("/run-default", methods=["POST"])
+def run_default():
+    """
+    Route REST pour exécuter le pipeline Kedro par défaut.
+    """
+    try:
+        with KedroSession.create(project_path=".") as session:
+            session.run()  # Exécute le pipeline par défaut
+        return jsonify({"status": "success", "message": "Pipeline par défaut exécuté avec succès."}), 200
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+# Route pour exécuter le pipeline d'entraînement du modèle
+@app.route("/train-model", methods=["POST"])
+def train_model():
+    """
+    Route REST pour exécuter le pipeline d'entraînement du modèle.
+    """
+    try:
+        with KedroSession.create(project_path=".") as session:
+            session.run(pipeline_name="model_training")  # Exécute le pipeline d'entraînement
+        return jsonify({"status": "success", "message": "Pipeline d'entraînement exécuté avec succès."}), 200
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+# Route pour prédire les résultats à partir des données utilisateur
 @app.route("/predict", methods=["POST"])
 def predict():
     """
     Route REST pour prédire les résultats à partir des données utilisateur.
     Les données sont sauvegardées avec un identifiant unique.
     """
-
-    # Définir le chemin pour sauvegarder les données utilisateur
     filepath = "data/05_model_input/user_inputs.json"
-
-    # Sauvegarder les données utilisateur
     user_id = save_from_post_request(request, filepath)
 
-    # Exécuter le pipeline Kedro
-    with KedroSession.create(project_path=".") as session:
-        session.run(pipeline_name="predict")
+    try:
+        with KedroSession.create(project_path=".") as session:
+            session.run(pipeline_name="predict")
 
-    # Charger le json générés par le pipeline
-    # Le chemin doit être relatif au répertoire racine du projet
-    output_path = "data/08_predictions/user_predictions.json"
-    with open(output_path, "r") as file:
-        output = json.load(file)
+        output_path = "data/08_predictions/user_predictions.json"
+        with open(output_path, "r") as file:
+            output = json.load(file)
 
-    # Retourner les résultats avec l'ID utilisateur
-    response = {
-        "user_id": user_id,
-        "results": output
-    }
-
-    return jsonify(response)
+        response = {
+            "user_id": user_id,
+            "results": output
+        }
+        return jsonify(response), 200
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5002, debug=True) #passer à false le mode debug à la fin des devs
+    app.run(host='127.0.0.1', port=5002, debug=True)  # Passer debug à False en production
