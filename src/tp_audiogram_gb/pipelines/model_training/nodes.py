@@ -50,35 +50,44 @@ def train_model(X_train, y_train):
     """
     Entraîne un modèle RandomForestRegressor pour prédire l'augmentation de l'ouïe.
     """
-    # Définir le modèle
-    model = RandomForestRegressor(random_state=42)
+    # Ancien code avec GridSearchCV (commenté pour accélérer les tests)
+    # ---------------------------------------------------------------
+    # model = RandomForestRegressor(random_state=42)
+    # param_grid = {
+    #     "n_estimators": [100, 200, 300],
+    #     "max_depth": [None, 10, 20, 30],
+    #     "min_samples_split": [2, 5, 10],
+    #     "min_samples_leaf": [1, 2, 4]
+    # }
+    # grid_search = GridSearchCV(
+    #     estimator=model,
+    #     param_grid=param_grid,
+    #     cv=3,  # Validation croisée à 3 plis
+    #     scoring="neg_mean_squared_error",
+    #     verbose=1,
+    #     n_jobs=-1
+    # )
+    # grid_search.fit(X_train, y_train)
+    # best_model = grid_search.best_estimator_
+    # print(f"✅ Modèle entraîné avec succès avec les meilleurs paramètres : {grid_search.best_params_}")
+    # return best_model
 
-    # Définir les hyperparamètres à optimiser
-    param_grid = {
-        "n_estimators": [100, 200, 300],
-        "max_depth": [None, 10, 20, 30],
-        "min_samples_split": [2, 5, 10],
-        "min_samples_leaf": [1, 2, 4]
-    }
-
-    # Optimisation des hyperparamètres avec GridSearchCV
-    grid_search = GridSearchCV(
-        estimator=model,
-        param_grid=param_grid,
-        cv=3,  # Validation croisée à 3 plis
-        scoring="neg_mean_squared_error",
-        verbose=1,
-        n_jobs=-1
+    # Nouveau code avec hyperparamètres codés en dur
+    # ---------------------------------------------------------------
+    model = RandomForestRegressor(
+        n_estimators=300,  # Nombre d'arbres dans la forêt
+        max_depth=20,      # Profondeur maximale des arbres
+        min_samples_split=2,  # Nombre minimum d'échantillons pour diviser un nœud
+        min_samples_leaf=1,   # Nombre minimum d'échantillons dans une feuille
+        random_state=42       # Graine pour la reproductibilité
     )
 
     # Entraîner le modèle
-    grid_search.fit(X_train, y_train)
+    model.fit(X_train, y_train)
 
-    # Meilleur modèle
-    best_model = grid_search.best_estimator_
-    print(f"✅ Modèle entraîné avec succès avec les meilleurs paramètres : {grid_search.best_params_}")
+    print(f"✅ Modèle entraîné avec succès avec des hyperparamètres fixes.")
 
-    return best_model
+    return model
 
 def save_model(model, filepath: str):
     """
