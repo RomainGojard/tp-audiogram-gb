@@ -19,7 +19,7 @@ def register_pipelines() -> dict[str, Pipeline]:
             # feature_engineering.create_pipeline(),
             model_training.create_pipeline(),
             model_evaluation.create_pipeline(),
-            model_deployment.create_pipeline()
+            #model_deployment.create_pipeline()
         ]),
         "predict": predict.create_pipeline()  # Ajouter la pipeline predict séparément
     }

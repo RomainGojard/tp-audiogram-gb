@@ -2,6 +2,7 @@
 from flask import Flask, request, jsonify
 from kedro.framework.startup import bootstrap_project
 import pandas as pd
+import json
 from pathlib import Path
 from kedro.framework.session import KedroSession
 from save_from_post_request import save_from_post_request
@@ -29,16 +30,19 @@ def predict():
     with KedroSession.create(project_path=".") as session:
         session.run(pipeline_name="predict")
 
-    # Charger les résultats générés par le pipeline
-    output = pd.read_csv("data/08_predictions/user_predictions.csv")
+    # Charger le json générés par le pipeline
+    # Le chemin doit être relatif au répertoire racine du projet
+    output_path = "data/08_predictions/user_predictions.json"
+    with open(output_path, "r") as file:
+        output = json.load(file)
 
     # Retourner les résultats avec l'ID utilisateur
     response = {
         "user_id": user_id,
-        "results": output.to_dict(orient="records")
+        "results": output
     }
 
-    return output.to_json(response)
+    return jsonify(response)
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5002, debug=True) #passer à false le mode debug à la fin des devs

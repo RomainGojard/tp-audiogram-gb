@@ -35,7 +35,7 @@ y_max:
   filepath: data/05_model_input/y_max.parquet
 
 user_inputs:
-  type: kedro_datasets.pandas.JSONDataSet
+  type: json.JSONDataset
   filepath: data/05_model_input/user_inputs.json
 
 trained_model:
@@ -47,7 +47,7 @@ evaluation_metrics:
   filepath: data/07_evaluation/evaluation_metrics.yml
 
 user_predictions:
-  type: pandas.JSONDataSet
+  type: json.JSONDataset
   filepath: data/08_predictions/user_predictions.json
 
 
