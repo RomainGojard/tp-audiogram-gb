@@ -6,9 +6,9 @@ tonal_exams_clean:
   type: pandas.ParquetDataset
   filepath: data/02_intermediate/tonal_exams_clean.parquet
 
-tonal_exams_features:
-  type: pandas.CSVDataset
-  filepath: data/04_feature/tonal_exams_features.csv
+# tonal_exams_features:
+#   type: pandas.CSVDataset
+#   filepath: data/04_feature/tonal_exams_features.csv
 
 X_test:
   type: pandas.ParquetDataset
@@ -34,6 +34,10 @@ y_max:
   type: pandas.ParquetDataset
   filepath: data/05_model_input/y_max.parquet
 
+user_inputs:
+  type: kedro_datasets.pandas.JSONDataSet
+  filepath: data/05_model_input/user_inputs.json
+
 trained_model:
   type: pickle.PickleDataset
   filepath: data/06_models/trained_model.pkl
@@ -41,6 +45,10 @@ trained_model:
 evaluation_metrics:
   type: yaml.YAMLDataset
   filepath: data/07_evaluation/evaluation_metrics.yml
+
+user_predictions:
+  type: pandas.JSONDataSet
+  filepath: data/08_predictions/user_predictions.json
 
 
 # model_api:

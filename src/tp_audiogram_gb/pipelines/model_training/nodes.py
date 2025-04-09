@@ -9,7 +9,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 import mlflow
-mlflow.set_tracking_uri("http://127.0.0.1:5000")
+mlflow.set_tracking_uri("http://127.0.0.1:5001")
 mlflow.autolog()
 
 def split_data(df: pd.DataFrame, test_size: float = 0.2):
@@ -90,11 +90,11 @@ def save_model(model, filepath: str):
     print(f"✅ Modèle sauvegardé dans {filepath}")
 
 
-def node_master_model_training(audiogram_features: pd.DataFrame) -> tuple:
+def node_master_model_training(tonal_exams_clean: pd.DataFrame) -> tuple:
     """
     Fonction principale du pipeline `model_training` qui orchestre les étapes.
     """
-    X_train, X_test, y_train, y_test, X_min, X_max, y_min, y_max = split_data(audiogram_features)
+    X_train, X_test, y_train, y_test, X_min, X_max, y_min, y_max = split_data(tonal_exams_clean)
     model = train_model(X_train, y_train)
 
     # Convertir les Series en DataFrame pour permettre la sauvegarde
