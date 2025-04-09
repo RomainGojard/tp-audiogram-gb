@@ -26,9 +26,6 @@ def split_data(df: pd.DataFrame, test_size: float = 0.2):
     # Caractéristiques (X) : valeurs avant traitement
     X = df[before_cols]
 
-    print(f"X : {X.shape}")
-    print(X)
-
     # Cible (y) : valeurs après traitement
     y = df[after_cols]
 
