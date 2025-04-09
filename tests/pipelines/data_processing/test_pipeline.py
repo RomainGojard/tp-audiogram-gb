@@ -1,67 +1,34 @@
-import logging
 import pandas as pd
 import pytest
-from kedro.io import DataCatalog
-from kedro.runner import SequentialRunner
-from tp_audiogram_gb.pipelines.data_science import create_pipeline as create_ds_pipeline
-from tp_audiogram_gb.pipelines.data_science.nodes import split_data
+from src.tp_audiogram_gb.pipelines.data_processing.nodes import clean_data
 
 @pytest.fixture
-def dummy_data():
-    return pd.DataFrame(
-        {
-            "engines": [1, 2, 3],
-            "crew": [4, 5, 6],
-            "passenger_capacity": [5, 6, 7],
-            "price": [120, 290, 30],
-        }
-    )
-
-@pytest.fixture
-def dummy_parameters():
-    parameters = {
-        "model_options": {
-            "test_size": 0.2,
-            "random_state": 3,
-            "features": ["engines", "passenger_capacity", "crew"],
-        }
+def mock_audiogram_raw():
+    # Génère un DataFrame factice avec des données brutes
+    data = {
+        "before_exam_125_Hz": [10, 20, None, 40, "abc"],
+        "before_exam_250_Hz": [15, 25, 35, None, 50],
+        "after_exam_125_Hz": [5, 10, 15, 20, 25],
+        "after_exam_250_Hz": [None, 30, 40, 50, 60],
+        "irrelevant_column": ["irrelevant", "data", "to", "be", "removed"],
     }
-    return parameters
+    return pd.DataFrame(data)
 
+def test_clean_data(mock_audiogram_raw):
+    # Teste la fonction clean_data
+    audiogram_raw = mock_audiogram_raw
+    cleaned_data = clean_data(audiogram_raw)
 
-def test_split_data(dummy_data, dummy_parameters):
-    X_train, X_test, y_train, y_test = split_data(
-        dummy_data, dummy_parameters["model_options"]
-    )
-    assert len(X_train) == 2
-    assert len(y_train) == 2
-    assert len(X_test) == 1
-    assert len(y_test) == 1
+    # Vérifie que les colonnes inutiles ont été supprimées
+    expected_columns = ["before_exam_125_Hz", "before_exam_250_Hz", "after_exam_125_Hz", "after_exam_250_Hz"]
+    assert list(cleaned_data.columns) == expected_columns, "Les colonnes inutiles n'ont pas été supprimées"
 
-def test_split_data_missing_price(dummy_data, dummy_parameters):
-    dummy_data_missing_price = dummy_data.drop(columns="price")
-    with pytest.raises(KeyError) as e_info:
-        X_train, X_test, y_train, y_test = split_data(dummy_data_missing_price, dummy_parameters["model_options"])
+    # Vérifie que les lignes contenant des valeurs manquantes ont été supprimées
+    assert not cleaned_data.isnull().values.any(), "Les lignes contenant des valeurs manquantes n'ont pas été supprimées"
 
-    assert "price" in str(e_info.value)
+    # Vérifie que les lignes contenant des lettres ont été supprimées
+    assert not cleaned_data.apply(lambda x: x.astype(str).str.contains('[a-zA-Z]').any(), axis=1).any(), "Les lignes contenant des lettres n'ont pas été supprimées"
 
-def test_data_science_pipeline(caplog, dummy_data, dummy_parameters):
-    pipeline = (
-        create_ds_pipeline()
-        .from_nodes("split_data_node")
-        .to_nodes("evaluate_model_node")
-    )
-    catalog = DataCatalog()
-    catalog.add_feed_dict(
-        {
-            "model_input_table" : dummy_data,
-            "params:model_options": dummy_parameters["model_options"],
-        }
-    )
-
-    caplog.set_level(logging.DEBUG, logger="kedro")
-    successful_run_msg = "Pipeline execution completed successfully."
-
-    SequentialRunner().run(pipeline, catalog)
-
-    assert successful_run_msg in caplog.text
+    # Vérifie que le DataFrame nettoyé a la bonne forme
+    assert cleaned_data.shape[0] == 2, f"Le nombre de lignes après nettoyage est incorrect : {cleaned_data.shape[0]}"
+    assert cleaned_data.shape[1] == 4, f"Le nombre de colonnes après nettoyage est incorrect : {cleaned_data.shape[1]}"
