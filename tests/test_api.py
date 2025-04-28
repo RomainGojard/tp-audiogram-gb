@@ -10,6 +10,15 @@ def api_url():
     """Fixture pour définir l'URL de base de l'API."""
     return BASE_URL
 
+def test_index(api_url):
+    """Test pour la route /."""
+    url = f"{api_url}/"
+    response = requests.get(url)
+
+    assert response.status_code == 200, f"Statut attendu : 200, obtenu : {response.status_code}"
+    data = response.json()
+    assert data["status"] == "API is running", f"Statut attendu : 'API is running', obtenu : {data['status']}"
+
 def test_run_default(api_url):
     """Test pour la route /run-default."""
     url = f"{api_url}/run-default"

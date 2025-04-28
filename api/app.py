@@ -12,6 +12,14 @@ app = Flask(__name__)
 CORS(app)  # Active les CORS pour toutes les routes
 bootstrap_project(Path.cwd())
 
+# Route pour vérifier l'état de l'API
+@app.route("/", methods=["GET"])
+def index():
+    """
+    Route REST pour vérifier l'état de l'API.
+    """
+    return jsonify({"status": "API is running"}), 200
+
 # Route pour exécuter le pipeline Kedro par défaut
 @app.route("/run-default", methods=["POST"])
 def run_default():
@@ -33,9 +41,10 @@ def train_model():
     """
     try:
         with KedroSession.create(project_path=".") as session:
-            session.run(pipeline_name="model_training")  # Exécute le pipeline d'entraînement
+            session.run(pipeline_name="train_model")  # Exécute le pipeline d'entraînement
         return jsonify({"status": "success", "message": "Pipeline d'entraînement exécuté avec succès."}), 200
     except Exception as e:
+        print(f"Erreur lors de l'exécution du pipeline d'entraînement : {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
 
 # Route pour prédire les résultats à partir des données utilisateur
