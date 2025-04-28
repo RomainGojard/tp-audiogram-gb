@@ -55,44 +55,77 @@ export default function PredictionForm({ onSubmit, isLoading }: PredictionFormPr
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="feature1">Feature 1</Label>
+              <Label htmlFor="before_exam_125_Hz">Before Exam 125 Hz</Label>
               <Input
-                id="feature1"
-                name="feature1"
-                value={formData.feature1}
+                id="before_exam_125_Hz"
+                name="before_exam_125_Hz"
+                value={formData.before_exam_125_Hz}
                 onChange={handleChange}
                 placeholder="Enter value"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="feature2">Feature 2</Label>
+              <Label htmlFor="before_exam_250_Hz">Before Exam 250 Hz</Label>
               <Input
-                id="feature2"
-                name="feature2"
-                value={formData.feature2}
+                id="before_exam_250_Hz"
+                name="before_exam_250_Hz"
+                value={formData.before_exam_250_Hz}
                 onChange={handleChange}
                 placeholder="Enter value"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="feature3">Feature 3</Label>
+              <Label htmlFor="before_exam_500_Hz">Before Exam 500 Hz</Label>
               <Input
-                id="feature3"
-                name="feature3"
-                value={formData.feature3}
+                id="before_exam_500_Hz"
+                name="before_exam_500_Hz"
+                value={formData.before_exam_500_Hz}
                 onChange={handleChange}
                 placeholder="Enter value"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="feature4">Feature 4</Label>
+              <Label htmlFor="before_exam_1000_Hz">Before Exam 1000 Hz</Label>
               <Input
-                id="feature4"
-                name="feature4"
-                value={formData.feature4}
+                id="before_exam_1000_Hz"
+                name="before_exam_1000_Hz"
+                value={formData.before_exam_1000_Hz}
+                onChange={handleChange}
+                placeholder="Enter value"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="before_exam_2000_Hz">Before Exam 2000 Hz</Label>
+              <Input
+                id="before_exam_2000_Hz"
+                name="before_exam_2000_Hz"
+                value={formData.before_exam_2000_Hz}
+                onChange={handleChange}
+                placeholder="Enter value"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="before_exam_4000_Hz">Before Exam 4000 Hz</Label>
+              <Input
+                id="before_exam_4000_Hz"
+                name="before_exam_4000_Hz"
+                value={formData.before_exam_4000_Hz}
+                onChange={handleChange}
+                placeholder="Enter value"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="before_exam_8000_Hz">Before Exam 8000 Hz</Label>
+              <Input
+                id="before_exam_8000_Hz"
+                name="before_exam_8000_Hz"
+                value={formData.before_exam_8000_Hz}
                 onChange={handleChange}
                 placeholder="Enter value"
               />
