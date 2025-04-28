@@ -16,10 +16,13 @@ interface PredictionFormProps {
 
 export default function PredictionForm({ onSubmit, isLoading }: PredictionFormProps) {
   const [formData, setFormData] = useState({
-    feature1: "",
-    feature2: "",
-    feature3: "",
-    feature4: "",
+    before_exam_125_Hz: "",
+    before_exam_250_Hz: "",
+    before_exam_500_Hz: "",
+    before_exam_1000_Hz: "",
+    before_exam_2000_Hz: "",
+    before_exam_4000_Hz: "",
+    before_exam_8000_Hz: "",
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
