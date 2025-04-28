@@ -6,8 +6,10 @@ import json
 from pathlib import Path
 from kedro.framework.session import KedroSession
 from save_from_post_request import save_from_post_request
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)  # Active les CORS pour toutes les routes
 bootstrap_project(Path.cwd())
 
 # Route pour exécuter le pipeline Kedro par défaut
