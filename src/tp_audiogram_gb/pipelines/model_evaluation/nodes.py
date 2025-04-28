@@ -44,4 +44,4 @@ def evaluate_model(trained_model, X_test, y_test, y_min, y_max):
     r2 = r2_score(y_test, predictions)
     print(f"✅ Coefficient de détermination (R²) : {r2}")
 
-    return {"mean_squared_error": mse, "r2_score": r2}
+    return {"mean_squared_error": mse, "r2_score": r2, "mean_absolute_error": mae}

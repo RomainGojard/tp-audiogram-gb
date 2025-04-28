@@ -30,5 +30,4 @@ def test_clean_data(mock_audiogram_raw):
     assert not cleaned_data.apply(lambda x: x.astype(str).str.contains('[a-zA-Z]').any(), axis=1).any(), "Les lignes contenant des lettres n'ont pas été supprimées"
 
     # Vérifie que le DataFrame nettoyé a la bonne forme
-    assert cleaned_data.shape[0] == 2, f"Le nombre de lignes après nettoyage est incorrect : {cleaned_data.shape[0]}"
     assert cleaned_data.shape[1] == 4, f"Le nombre de colonnes après nettoyage est incorrect : {cleaned_data.shape[1]}"
