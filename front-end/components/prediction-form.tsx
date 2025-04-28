@@ -55,6 +55,11 @@ export default function PredictionForm({ onSubmit, isLoading }: PredictionFormPr
     onSubmit(processedData)
   }
 
+  // Vérifiez si le bouton doit être désactivé
+  const isSubmitDisabled =
+    Object.values(formData).some((value) => value === "") || // Vérifie si un champ est vide
+    Object.values(errors).some((error) => error) // Vérifie s'il y a des erreurs
+
   return (
     <Card>
       <CardHeader>
@@ -80,7 +85,7 @@ export default function PredictionForm({ onSubmit, isLoading }: PredictionFormPr
             ))}
           </div>
 
-          <Button type="submit" disabled={isLoading} className="w-full">
+          <Button type="submit" disabled={isLoading || isSubmitDisabled} className="w-full">
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Get Prediction
           </Button>
