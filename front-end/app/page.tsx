@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { runDefaultPipeline, trainModel, getPrediction } from "@/lib/api"
+import { runDefaultPipeline, trainModel, getPrediction } from "@/lib/api";
 import PredictionForm from "@/components/prediction-form"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"

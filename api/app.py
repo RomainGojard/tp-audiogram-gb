@@ -9,7 +9,7 @@ from save_from_post_request import save_from_post_request
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)  # Active les CORS pour toutes les routes
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
 bootstrap_project(Path.cwd())
 
 # Route pour vérifier l'état de l'API
