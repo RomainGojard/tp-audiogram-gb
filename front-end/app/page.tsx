@@ -47,7 +47,7 @@ export default function Home() {
   return (
     <main className="container mx-auto p-4 max-w-4xl">
       <header className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Tonal Exam Predictor</h1>
+        <h1 className="text-3xl font-bold">Prostetic Gain Predictor</h1>
         <ThemeToggle />
       </header>
 

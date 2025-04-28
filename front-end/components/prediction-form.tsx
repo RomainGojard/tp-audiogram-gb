@@ -25,8 +25,18 @@ export default function PredictionForm({ onSubmit, isLoading }: PredictionFormPr
     before_exam_8000_Hz: "",
   })
 
+  const [errors, setErrors] = useState<Record<string, boolean>>({})
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
+
+    // Vérifiez si la valeur est un nombre valide
+    const isValid = value === "" || !isNaN(Number(value))
+
+    // Mettez à jour les erreurs
+    setErrors((prev) => ({ ...prev, [name]: !isValid }))
+
+    // Mettez à jour les données du formulaire
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
@@ -54,82 +64,20 @@ export default function PredictionForm({ onSubmit, isLoading }: PredictionFormPr
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="before_exam_125_Hz">Before Exam 125 Hz</Label>
-              <Input
-                id="before_exam_125_Hz"
-                name="before_exam_125_Hz"
-                value={formData.before_exam_125_Hz}
-                onChange={handleChange}
-                placeholder="Enter value"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="before_exam_250_Hz">Before Exam 250 Hz</Label>
-              <Input
-                id="before_exam_250_Hz"
-                name="before_exam_250_Hz"
-                value={formData.before_exam_250_Hz}
-                onChange={handleChange}
-                placeholder="Enter value"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="before_exam_500_Hz">Before Exam 500 Hz</Label>
-              <Input
-                id="before_exam_500_Hz"
-                name="before_exam_500_Hz"
-                value={formData.before_exam_500_Hz}
-                onChange={handleChange}
-                placeholder="Enter value"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="before_exam_1000_Hz">Before Exam 1000 Hz</Label>
-              <Input
-                id="before_exam_1000_Hz"
-                name="before_exam_1000_Hz"
-                value={formData.before_exam_1000_Hz}
-                onChange={handleChange}
-                placeholder="Enter value"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="before_exam_2000_Hz">Before Exam 2000 Hz</Label>
-              <Input
-                id="before_exam_2000_Hz"
-                name="before_exam_2000_Hz"
-                value={formData.before_exam_2000_Hz}
-                onChange={handleChange}
-                placeholder="Enter value"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="before_exam_4000_Hz">Before Exam 4000 Hz</Label>
-              <Input
-                id="before_exam_4000_Hz"
-                name="before_exam_4000_Hz"
-                value={formData.before_exam_4000_Hz}
-                onChange={handleChange}
-                placeholder="Enter value"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="before_exam_8000_Hz">Before Exam 8000 Hz</Label>
-              <Input
-                id="before_exam_8000_Hz"
-                name="before_exam_8000_Hz"
-                value={formData.before_exam_8000_Hz}
-                onChange={handleChange}
-                placeholder="Enter value"
-              />
-            </div>
+            {Object.keys(formData).map((key) => (
+              <div key={key} className="space-y-2">
+                <Label htmlFor={key}>{key.replace(/_/g, " ")}</Label>
+                <Input
+                  id={key}
+                  name={key}
+                  value={formData[key as keyof typeof formData]}
+                  onChange={handleChange}
+                  placeholder="Enter value"
+                  className={errors[key] ? "border-red-500 focus:ring-red-500" : ""}
+                />
+                {errors[key] && <p className="text-red-500 text-sm">Please enter a valid number</p>}
+              </div>
+            ))}
           </div>
 
           <Button type="submit" disabled={isLoading} className="w-full">
