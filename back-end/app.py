@@ -2,7 +2,6 @@
 from flask import Flask, request, jsonify
 from kedro.framework.startup import bootstrap_project
 from kedro.framework.session import KedroSession
-from kedro.framework.context import KedroContext
 from pathlib import Path
 import json
 from save_from_post_request import save_from_post_request
@@ -33,7 +32,6 @@ def run_default():
     """
     try:
         with KedroSession.create() as session:
-            context = session.load_context()
             session.run()  # Exécute le pipeline par défaut
         return jsonify({"status": "success", "message": "Pipeline par défaut exécuté avec succès."}), 200
     except Exception as e:
@@ -60,7 +58,7 @@ def predict():
     Route REST pour prédire les résultats à partir des données utilisateur.
     Les données sont sauvegardées avec un identifiant unique.
     """
-    filepath = PROJECT_PATH / "data/05_model_input/user_inputs.json"
+    filepath = PROJECT_PATH
     user_id = save_from_post_request(request, filepath)
 
     try:
