@@ -1,19 +1,17 @@
 # app.py
 from flask import Flask, request, jsonify
 from kedro.framework.startup import bootstrap_project
-import pandas as pd
-import json
-from pathlib import Path
 from kedro.framework.session import KedroSession
-import subprocess
+from pathlib import Path
+import json
 from save_from_post_request import save_from_post_request
 from flask_cors import CORS
 
 app = Flask(__name__)
-#CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}})
+CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}})
 
 # Chemin du projet Kedro dans le conteneur Docker
-PROJECT_PATH = Path("")
+PROJECT_PATH = Path("/app")  # Assurez-vous que ce chemin correspond au montage Docker
 
 # Initialiser Kedro
 bootstrap_project(PROJECT_PATH)
@@ -33,7 +31,7 @@ def run_default():
     Route REST pour exécuter le pipeline Kedro par défaut.
     """
     try:
-        with KedroSession.create(project_path=".") as session:
+        with KedroSession.create(project_path=PROJECT_PATH) as session:
             session.run()  # Exécute le pipeline par défaut
         return jsonify({"status": "success", "message": "Pipeline par défaut exécuté avec succès."}), 200
     except Exception as e:
@@ -46,7 +44,7 @@ def train_model():
     Route REST pour exécuter le pipeline d'entraînement du modèle.
     """
     try:
-        with KedroSession.create(project_path=".") as session:
+        with KedroSession.create(project_path=PROJECT_PATH) as session:
             session.run(pipeline_name="train_model")  # Exécute le pipeline d'entraînement
         return jsonify({"status": "success", "message": "Pipeline d'entraînement exécuté avec succès."}), 200
     except Exception as e:
@@ -60,14 +58,14 @@ def predict():
     Route REST pour prédire les résultats à partir des données utilisateur.
     Les données sont sauvegardées avec un identifiant unique.
     """
-    filepath = "data/05_model_input/user_inputs.json"
+    filepath = PROJECT_PATH / "data/05_model_input/user_inputs.json"
     user_id = save_from_post_request(request, filepath)
 
     try:
-        with KedroSession.create(project_path=".") as session:
+        with KedroSession.create(project_path=PROJECT_PATH) as session:
             session.run(pipeline_name="predict")
 
-        output_path = "data/08_predictions/user_predictions.json"
+        output_path = PROJECT_PATH / "data/08_predictions/user_predictions.json"
         with open(output_path, "r") as file:
             output = json.load(file)
 

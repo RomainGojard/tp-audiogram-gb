@@ -5,17 +5,17 @@ services:
       context: ./front-end
       dockerfile: Dockerfile
     ports:
-      - "8080:80" # Expose le front-end sur le port 8080
+      - "8080:8080" # Mappe le port 8080 du conteneur au port 8080 de l'hôte
     environment:
-      - NEXT_PUBLIC_API_URL=http://backend:5002 # Appelle le back-end via le réseau Docker
+      - NEXT_PUBLIC_API_URL=http://back-end:5002 # URL de l'API back-end
     depends_on:
-      - backend
+      - back-end
     networks:
       - app_network
 
-  backend:
+  back-end:
     build:
-      context: ./backend
+      context: ./back-end
       dockerfile: Dockerfile
     environment:
       - FLASK_ENV=development
