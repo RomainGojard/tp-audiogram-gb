@@ -17,7 +17,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Exposer le port de l'API Flask
-EXPOSE 5002
+#EXPOSE 5002
 
 # Commande pour démarrer l'API Flask
 CMD ["python", "app.py"]

@@ -2,6 +2,7 @@
 from flask import Flask, request, jsonify
 from kedro.framework.startup import bootstrap_project
 from kedro.framework.session import KedroSession
+from kedro.framework.context import KedroContext
 from pathlib import Path
 import json
 from save_from_post_request import save_from_post_request
@@ -31,7 +32,8 @@ def run_default():
     Route REST pour exécuter le pipeline Kedro par défaut.
     """
     try:
-        with KedroSession.create(project_path=PROJECT_PATH) as session:
+        with KedroSession.create() as session:
+            context = session.load_context()
             session.run()  # Exécute le pipeline par défaut
         return jsonify({"status": "success", "message": "Pipeline par défaut exécuté avec succès."}), 200
     except Exception as e:
