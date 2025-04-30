@@ -10,6 +10,8 @@ COPY package*.json ./
 # Installer pnpm et les dépendances du projet
 RUN npm install -g pnpm && pnpm install
 
+RUN pnpm install next
+
 # Copier tout le code source dans le conteneur
 COPY . .
 
