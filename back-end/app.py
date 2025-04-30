@@ -5,12 +5,18 @@ import pandas as pd
 import json
 from pathlib import Path
 from kedro.framework.session import KedroSession
+import subprocess
 from save_from_post_request import save_from_post_request
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
-bootstrap_project(Path.cwd())
+#CORS(app, resources={r"/*": {"origins": "http://localhost:8080"}})
+
+# Chemin du projet Kedro dans le conteneur Docker
+PROJECT_PATH = Path("")
+
+# Initialiser Kedro
+bootstrap_project(PROJECT_PATH)
 
 # Route pour vérifier l'état de l'API
 @app.route("/", methods=["GET"])
@@ -74,4 +80,4 @@ def predict():
         return jsonify({"status": "error", "message": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5002, debug=True)  # Passer debug à False en production
+    app.run(host='0.0.0.0', port=5002, debug=True)  # Passer debug à False en production
