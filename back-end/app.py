@@ -9,12 +9,7 @@ from save_from_post_request import save_from_post_request
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": [
-    "http://localhost:3000",
-    "http://localhost:8080",
-    "http://127.0.0.1:3000",
-    "http://127.0.0.1:8080"
-]}})
+CORS(app)
 
 # Chemin du projet Kedro dans le conteneur Docker
 PROJECT_PATH = Path("/app")  # Assurez-vous que ce chemin correspond au montage Docker
