@@ -5,11 +5,7 @@ services:
     container_name: back-end
     ports:
       - "5002:5002"
-    volumes:
-      - ./back-end:/app
-      - ./back-end/data:/app/data
     environment:
-      - FLASK_APP=app.py
       - FLASK_ENV=development
 
   front-end:

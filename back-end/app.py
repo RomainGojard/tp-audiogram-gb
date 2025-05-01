@@ -5,6 +5,7 @@ from kedro.framework.session import KedroSession
 from kedro.framework.context import KedroContext
 from pathlib import Path
 import json
+import os
 from save_from_post_request import save_from_post_request
 from flask_cors import CORS
 
@@ -12,7 +13,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Chemin du projet Kedro dans le conteneur Docker
-PROJECT_PATH = Path("/app")  # Assurez-vous que ce chemin correspond au montage Docker
+PROJECT_PATH = Path("/app") 
 
 # Initialiser Kedro
 bootstrap_project(PROJECT_PATH)
@@ -60,6 +61,7 @@ def predict():
     Les données sont sauvegardées avec un identifiant unique.
     """
     filepath = PROJECT_PATH / "data/05_model_input/user_inputs.json"
+
     user_id = save_from_post_request(request, filepath)
 
     try:
@@ -69,6 +71,7 @@ def predict():
         output_path = PROJECT_PATH / "data/08_predictions/user_predictions.json"
         with open(output_path, "r") as file:
             output = json.load(file)
+            print(f"Prédictions : {output}")
 
         response = {
             "user_id": user_id,
@@ -79,4 +82,4 @@ def predict():
         return jsonify({"status": "error", "message": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5002, debug=True)  # Passer debug à False en production
+    app.run(host='0.0.0.0', port=5002, debug=True)
