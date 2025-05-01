@@ -60,7 +60,7 @@ def predict():
     Route REST pour prédire les résultats à partir des données utilisateur.
     Les données sont sauvegardées avec un identifiant unique.
     """
-    filepath = PROJECT_PATH / "data/05_model_input/user_inputs.json"
+    filepath = "data/05_model_input/user_inputs.json"
 
     user_id = save_from_post_request(request, filepath)
 
@@ -68,7 +68,7 @@ def predict():
         with KedroSession.create(project_path=PROJECT_PATH) as session:
             session.run(pipeline_name="predict")
 
-        output_path = PROJECT_PATH / "data/08_predictions/user_predictions.json"
+        output_path = "data/08_predictions/user_predictions.json"
         with open(output_path, "r") as file:
             output = json.load(file)
             print(f"Prédictions : {output}")
